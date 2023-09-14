@@ -1,10 +1,39 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 
-class AddTaskPage extends StatelessWidget {
+class AddTaskPage extends StatefulWidget {
+  const AddTaskPage({Key? key}) : super(key: key);
+
+  @override
+  AddTaskPageState createState() => AddTaskPageState();
+}
+
+class AddTaskPageState extends State<AddTaskPage> {
   final TextEditingController taskController = TextEditingController();
+  bool canAdd = false;
+
+  @override
+  void initState() {
+    super.initState();
+    taskController.addListener(_onTextChanged);
+  }
+
+  void _onTextChanged() {
+    setState(() {
+      canAdd = taskController.text.trim().isNotEmpty;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    void submitTask() {
+      if (canAdd) {
+        HapticFeedback.selectionClick();
+        String taskName = taskController.text.trim();
+        Navigator.of(context).pop(taskName);
+      }
+    }
+
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: Text('Add Task'),
@@ -16,26 +45,26 @@ class AddTaskPage extends StatelessWidget {
           children: [
             CupertinoTextField(
               controller: taskController,
+              autofocus: true,
+              textInputAction: TextInputAction.done,
               placeholder: 'What are you going to do?',
+              onSubmitted: (text) => submitTask(),
             ),
             SizedBox(height: 20),
             CupertinoButton.filled(
+              onPressed: canAdd ? submitTask : null,
               child: Text('Add'),
-              onPressed: () {
-                String taskName = taskController.text.trim();
-                if (taskName.isNotEmpty) {
-                  // TODO: Add task to tasks list
-                  print('New Task: $taskName');
-                } else {
-                  // TODO: Handle empty task
-                  print('Empty task');
-                }
-                Navigator.of(context).pop();
-              },
             ),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    taskController.removeListener(_onTextChanged);
+    taskController.dispose();
+    super.dispose();
   }
 }
