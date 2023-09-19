@@ -1,44 +1,79 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
+// TO DO: class Task will be replaced with API. This is a temporary solution.
+class Task {
+  final String name;
+  bool isCompleted;
+
+  Task({required this.name, this.isCompleted = false});
+}
+
 class TaskItem extends StatelessWidget {
-  final String task;
+  final Task task;
+  final VoidCallback onDelete;
+  final VoidCallback onToggleComplete;
 
   TaskItem({
-    super.key,
+    Key? key,
     required this.task,
-    // TO DO: isCompleted state
-  });
+    required this.onDelete,
+    required this.onToggleComplete,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+      padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 15.0),
       child: Row(
         children: [
-          Expanded(
-            child: Text(task, style: TextStyle(fontSize: 20)),
-          ),
-          CupertinoButton(
-            onPressed: () {
-              print("Completed button pressed");
-              // TO DO: Implement completed state
-              HapticFeedback.selectionClick();
-            },
-            child:
-                Icon(CupertinoIcons.circle, color: CupertinoColors.systemGrey),
-          ),
+          _buildTaskText(),
+          _buildToggleCompleteButton(context),
           SizedBox(width: 10),
-          CupertinoButton(
-            onPressed: () {
-              print("Delete button pressed");
-              // TO DO: Implement delete
-            },
-            child: Icon(CupertinoIcons.delete,
-                color: CupertinoColors.destructiveRed),
-          ),
+          _buildDeleteButton(),
         ],
       ),
+    );
+  }
+
+  Widget _buildTaskText() {
+    return Expanded(
+      child: Text(
+        task.name,
+        style: TextStyle(
+          fontSize: 20,
+          decoration: task.isCompleted ? TextDecoration.lineThrough : null,
+          color: task.isCompleted ? CupertinoColors.systemGrey : null,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildToggleCompleteButton(BuildContext context) {
+    return CupertinoButton(
+      onPressed: () {
+        HapticFeedback.selectionClick();
+        onToggleComplete();
+      },
+      child: Icon(
+        task.isCompleted
+            ? CupertinoIcons.checkmark_circle_fill
+            : CupertinoIcons.circle,
+        color: task.isCompleted
+            ? CupertinoTheme.of(context).primaryColor
+            : CupertinoColors.systemGrey,
+        size: 30.0,
+      ),
+    );
+  }
+
+  Widget _buildDeleteButton() {
+    return CupertinoButton(
+      onPressed: () {
+        HapticFeedback.selectionClick();
+        onDelete();
+      },
+      child: Icon(CupertinoIcons.delete, color: CupertinoColors.destructiveRed),
     );
   }
 }

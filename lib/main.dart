@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'task_page.dart';
+import 'home_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(TodoApp());
 }
 
-class MyApp extends StatelessWidget {
+class TodoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
