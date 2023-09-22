@@ -41,11 +41,12 @@ class AddTaskPageState extends State<AddTaskPage> {
       child: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             CupertinoTextField(
               controller: taskController,
               autofocus: true,
+              textCapitalization: TextCapitalization.sentences,
               textInputAction: TextInputAction.done,
               placeholder: 'What are you going to do?',
               onSubmitted: (text) => submitTask(),
@@ -55,6 +56,9 @@ class AddTaskPageState extends State<AddTaskPage> {
               onPressed: canAdd ? submitTask : null,
               child: Text('Add'),
             ),
+            SizedBox(
+              height: 60,
+            )
           ],
         ),
       ),
