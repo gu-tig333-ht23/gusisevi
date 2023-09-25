@@ -108,40 +108,106 @@ class TaskItem extends StatelessWidget {
   }
 
   Future<String?> showEditTaskDialog(
-      BuildContext context, String currentTitle) async {
-    TextEditingController controller =
-        TextEditingController(text: currentTitle);
+    BuildContext context,
+    String currentTitle,
+  ) async {
     return await showCupertinoDialog<String>(
       context: context,
-      builder: (context) {
-        return CupertinoAlertDialog(
-          title: Text('Edit Task'),
-          content: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0),
+      builder: (context) => _EditTaskDialog(currentTitle: currentTitle),
+    );
+  }
+}
+
+class _EditTaskDialog extends StatefulWidget {
+  final String currentTitle;
+
+  _EditTaskDialog({required this.currentTitle});
+
+  @override
+  _EditTaskDialogState createState() => _EditTaskDialogState();
+}
+
+class _EditTaskDialogState extends State<_EditTaskDialog> {
+  late TextEditingController _controller;
+  bool _isSaveEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.currentTitle);
+    _controller.addListener(() {
+      setState(() {
+        _isSaveEnabled = _controller.text.trim().isNotEmpty;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoAlertDialog(
+      title: Text('Edit Task'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 12.0, bottom: 8.0),
             child: CupertinoTextField(
-              controller: controller,
+              controller: _controller,
+              style: TextStyle(fontSize: 16),
+              autofocus: true,
+              minLines: 1,
+              maxLines: 5,
               clearButtonMode: OverlayVisibilityMode.editing,
-              placeholder: 'Enter task title',
-              maxLines: 2,
               textAlignVertical: TextAlignVertical.top,
+              padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+              textInputAction: TextInputAction.done,
+              onSubmitted: (text) {
+                if (_isSaveEnabled) {
+                  Navigator.of(context).pop(_controller.text.trim());
+                }
+              },
             ),
           ),
-          actions: [
-            CupertinoDialogAction(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+          if (!_isSaveEnabled)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                'Task title cannot be empty.',
+                style: TextStyle(
+                  color: CupertinoColors.systemRed,
+                  fontSize: 12,
+                ),
+              ),
             ),
-            CupertinoDialogAction(
-              child: Text('Save'),
-              onPressed: () {
-                Navigator.of(context).pop(controller.text);
-              },
+        ],
+      ),
+      actions: [
+        CupertinoDialogAction(
+          child: Text('Cancel'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        CupertinoDialogAction(
+          onPressed: _isSaveEnabled
+              ? () {
+                  Navigator.of(context).pop(_controller.text.trim());
+                }
+              : null,
+          child: Text(
+            'Save',
+            style: TextStyle(
+              color: _isSaveEnabled ? null : CupertinoColors.systemGrey,
             ),
-          ],
-        );
-      },
+          ),
+        ),
+      ],
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }

@@ -12,7 +12,7 @@ class TodoApi {
     final response = await http.get(Uri.parse("$url/todos?key=$apiKey"));
     if (response.statusCode == 200) {
       Iterable l = json.decode(response.body);
-      print("Received data: ${response.body}");
+      //print("Received data: ${response.body}");
       return List<Todo>.from(l.map((model) => Todo.fromJson(model)));
     } else {
       throw Exception('Failed to load todos');

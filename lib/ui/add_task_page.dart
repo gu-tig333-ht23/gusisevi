@@ -49,6 +49,7 @@ class AddTaskPageState extends State<AddTaskPage> {
               textCapitalization: TextCapitalization.sentences,
               textInputAction: TextInputAction.done,
               placeholder: 'What are you going to do?',
+              clearButtonMode: OverlayVisibilityMode.editing,
               onSubmitted: (text) => submitTask(),
             ),
             SizedBox(height: 20),

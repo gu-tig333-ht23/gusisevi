@@ -193,7 +193,6 @@ class HomePage extends StatelessWidget {
 
   List<Todo> _getFilteredTodos(TodoProvider todoProvider) {
     return todoProvider.todos.where((todo) {
-      print("Filtering todo: ${todo.title}, done: ${todo.done}");
       switch (todoProvider.currentFilter) {
         case TaskFilter.completed:
           return todo.done;
