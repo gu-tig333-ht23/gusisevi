@@ -1,19 +1,24 @@
 import 'package:flutter/cupertino.dart';
-import 'home_page.dart';
+import 'package:provider/provider.dart';
+import 'package:vincent_to_do/utils/todo_provider.dart';
+import 'utils/todo_api.dart';
+import 'ui/home_page.dart';
 
-void main() {
-  runApp(TodoApp());
-}
+void main() => runApp(MyApp());
 
-class TodoApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CupertinoApp(
-      title: 'Vincent To Do',
-      theme: CupertinoThemeData(
-        primaryColor: CupertinoColors.systemRed,
+    return ChangeNotifierProvider(
+      create: (context) =>
+          TodoProvider(TodoApi(apiKey: '2a0dc0d2-9f0b-4ac8-9eae-54b9720a9afc')),
+      child: CupertinoApp(
+        title: 'Vincent Todo',
+        theme: CupertinoThemeData(
+          primaryColor: CupertinoColors.systemRed,
+        ),
+        home: HomePage(),
       ),
-      home: TaskPage(),
     );
   }
 }
