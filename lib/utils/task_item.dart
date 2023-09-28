@@ -158,6 +158,7 @@ class _EditTaskDialogState extends State<_EditTaskDialog> {
               minLines: 1,
               maxLines: 5,
               clearButtonMode: OverlayVisibilityMode.editing,
+              textCapitalization: TextCapitalization.sentences,
               textAlignVertical: TextAlignVertical.top,
               padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
               textInputAction: TextInputAction.done,
