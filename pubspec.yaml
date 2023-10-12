@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: any
   http: any
   provider: any
+  fluttertoast: any
 
 dev_dependencies:
   flutter_test:

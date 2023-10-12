@@ -1,8 +1,6 @@
-// Bridges app and API.
-
 import 'package:flutter/cupertino.dart';
 import 'package:vincent_to_do/ui/home_page.dart';
-import 'package:vincent_to_do/utils/task_item.dart';
+import 'package:vincent_to_do/ui/task_item.dart';
 import 'package:vincent_to_do/utils/todo_api.dart';
 
 class TodoProvider with ChangeNotifier {
@@ -34,22 +32,28 @@ class TodoProvider with ChangeNotifier {
 
   Future<void> updateTodo(Todo todo) async {
     await api.updateTodo(todo);
-    notifyListeners();
+    int index = todos.indexWhere((t) => t.id == todo.id);
+    if (index != -1) {
+      todos[index] = todo;
+      notifyListeners();
+    }
   }
 
   Future<void> deleteTodo(Todo todo) async {
     await api.deleteTodo(todo);
     int index = todos.indexOf(todo);
-    if (index != -1) todos.removeAt(index);
-    notifyListeners();
+    if (index != -1) {
+      todos.removeAt(index);
+      notifyListeners();
+    }
   }
 
-  void replaceTodo(Todo oldTodo, Todo newTodo) {
+  void replaceTodo(Todo oldTodo, Todo newTodo) async {
+    await api.updateTodo(newTodo);
     int index = todos.indexOf(oldTodo);
     if (index != -1) {
       todos[index] = newTodo;
       notifyListeners();
-      api.updateTodo(newTodo);
     }
   }
 }

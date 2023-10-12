@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) =>
-          TodoProvider(TodoApi(apiKey: '2a0dc0d2-9f0b-4ac8-9eae-54b9720a9afc')),
+          TodoProvider(TodoApi(apiKey: '9644c867-8ec1-4d5c-a4ea-2307e3943365')),
       child: CupertinoApp(
         title: 'Vincent Todo',
         theme: CupertinoThemeData(

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:vincent_to_do/utils/todo_provider.dart';
-import '../utils/task_item.dart';
+import 'task_item.dart';
 import 'add_task_page.dart';
 
 enum TaskFilter { all, completed, notCompleted }

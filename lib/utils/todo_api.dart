@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'task_item.dart';
+import '../ui/task_item.dart';
 
 class TodoApi {
   final String url = "https://todoapp-api.apps.k8s.gu.se";
